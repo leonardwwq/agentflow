@@ -1,0 +1,16 @@
+{
+  "name": "Agent Flow — 多智能体协作平台",
+  "short_name": "Agent Flow",
+  "description": "让业务专家通过拖拽角色与自定义流程，轻松搭建、运行和管理多智能体协作工作流。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

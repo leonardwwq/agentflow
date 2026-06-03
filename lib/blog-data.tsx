@@ -21,25 +21,25 @@ export interface BlogPost {
 
 const defaultAuthor = {
   name: siteConfig.name,
-  avatar: "/placeholder.svg",
-  role: "产品团队",
+  avatar: "/icon-512.png",
+  role: "王伟权",
 }
 
 export const blogPosts: BlogPost[] = [
   {
     id: 1,
     slug: "v0-2-dashboard-confirmation-narrative",
-    title: "v0.2 演示版：Dashboard 与确认流叙事对齐",
-    excerpt: "产品模型 v0.2 落地：Dashboard 主界面、项目主控排程、全员确认、工作流引擎叙事全站统一。",
+    title: "v0.2 演示版：叙事故事与产品规划",
+    excerpt: "Agent Flow v0.2 规划：Dashboard 主界面、项目主控排程、全员确认、工作流引擎叙事全站统一。",
     content: `
 ## 产品模型更新
 
-Agent Flow v0.2 完成主模型对齐：
+Agent Flow v0.2 完成主模型产品规划与叙事对齐：
 
-1. **Dashboard 为主界面** — 项目阶段、大排程表、角色卡片三区域同屏  
-2. **项目主控** — 内置角色产出排程草案，经用户确认后写入 Dashboard  
-3. **人确认机制** — 所有角色交付物均需确认后才算正式结果  
-4. **工作流是引擎** — 执行与交接以工作流为准；排程是给人看的共识视图  
+1. **Dashboard** — 项目阶段、大排程表、角色卡片三区域同屏  
+2. **项目主控** — 内置项目角色产出排程草案  
+3. **人机协同机制** — 所有角色交付物均需确认  
+4. **工作流是引擎** — 以工作流为核心，以可视化排程为看板管理项目进度  
 
 ## 术语统一
 

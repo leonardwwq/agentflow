@@ -350,38 +350,110 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
   )
 }
 
-// Simple markdown parser for rendering content
-function parseMarkdown(content: string): string {
+function parseInlineMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+}
+
+function isBlockStart(line: string): boolean {
+  const trimmed = line.trim()
   return (
-    content
-      // Headers
-      .replace(/^### (.*$)/gm, "<h3>$1</h3>")
-      .replace(/^## (.*$)/gm, "<h2>$1</h2>")
-      .replace(/^# (.*$)/gm, "<h1>$1</h1>")
-      // Bold
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      // Italic
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
-      // Code blocks
-      .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
-      // Inline code
-      .replace(/`([^`]+)`/g, "<code>$1</code>")
-      // Unordered lists
-      .replace(/^- (.*$)/gm, "<li>$1</li>")
-      .replace(/(<li>.*<\/li>)\n(?=<li>)/g, "$1")
-      .replace(/(<li>.*<\/li>)(?:\n|$)/g, "<ul>$1</ul>")
-      // Ordered lists
-      .replace(/^\d+\. (.*$)/gm, "<li>$1</li>")
-      // Paragraphs
-      .replace(/\n\n(?!<)/g, "</p><p>")
-      .replace(/^(?!<)(.+)$/gm, "<p>$1</p>")
-      // Clean up empty paragraphs
-      .replace(/<p><\/p>/g, "")
-      .replace(/<p>(<h[1-3]>)/g, "$1")
-      .replace(/(<\/h[1-3]>)<\/p>/g, "$1")
-      .replace(/<p>(<pre>)/g, "$1")
-      .replace(/(<\/pre>)<\/p>/g, "$1")
-      .replace(/<p>(<ul>)/g, "$1")
-      .replace(/(<\/ul>)<\/p>/g, "$1")
+    trimmed.startsWith("# ") ||
+    trimmed.startsWith("## ") ||
+    trimmed.startsWith("### ") ||
+    trimmed.startsWith("- ") ||
+    /^\d+\.\s/.test(trimmed) ||
+    trimmed.startsWith("```")
   )
+}
+
+// Line-based markdown parser for blog post content
+function parseMarkdown(content: string): string {
+  const lines = content.trim().split("\n")
+  const html: string[] = []
+  let index = 0
+
+  while (index < lines.length) {
+    const line = lines[index]
+    const trimmed = line.trim()
+
+    if (trimmed === "") {
+      index++
+      continue
+    }
+
+    if (trimmed.startsWith("### ")) {
+      html.push(`<h3>${parseInlineMarkdown(trimmed.slice(4))}</h3>`)
+      index++
+      continue
+    }
+
+    if (trimmed.startsWith("## ")) {
+      html.push(`<h2>${parseInlineMarkdown(trimmed.slice(3))}</h2>`)
+      index++
+      continue
+    }
+
+    if (trimmed.startsWith("# ")) {
+      html.push(`<h1>${parseInlineMarkdown(trimmed.slice(2))}</h1>`)
+      index++
+      continue
+    }
+
+    if (trimmed.startsWith("```")) {
+      const language = trimmed.slice(3).trim()
+      const codeLines: string[] = []
+      index++
+
+      while (index < lines.length && !lines[index].trim().startsWith("```")) {
+        codeLines.push(lines[index])
+        index++
+      }
+
+      const code = codeLines.join("\n").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      html.push(`<pre><code class="language-${language}">${code}</code></pre>`)
+      index++
+      continue
+    }
+
+    if (/^\d+\.\s/.test(trimmed)) {
+      const items: string[] = []
+
+      while (index < lines.length && /^\d+\.\s/.test(lines[index].trim())) {
+        const itemText = lines[index].trim().replace(/^\d+\.\s/, "")
+        items.push(`<li>${parseInlineMarkdown(itemText)}</li>`)
+        index++
+      }
+
+      html.push(`<ol>${items.join("")}</ol>`)
+      continue
+    }
+
+    if (trimmed.startsWith("- ")) {
+      const items: string[] = []
+
+      while (index < lines.length && lines[index].trim().startsWith("- ")) {
+        items.push(`<li>${parseInlineMarkdown(lines[index].trim().slice(2))}</li>`)
+        index++
+      }
+
+      html.push(`<ul>${items.join("")}</ul>`)
+      continue
+    }
+
+    const paragraphLines: string[] = []
+
+    while (index < lines.length) {
+      const current = lines[index].trim()
+      if (current === "" || isBlockStart(lines[index])) break
+      paragraphLines.push(current)
+      index++
+    }
+
+    html.push(`<p>${parseInlineMarkdown(paragraphLines.join(" "))}</p>`)
+  }
+
+  return html.join("\n")
 }

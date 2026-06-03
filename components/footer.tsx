@@ -96,18 +96,6 @@ export function Footer() {
 
           <p className="font-mono text-xs text-muted-foreground text-center sm:text-right">
             © {new Date().getFullYear()} {name}
-            <span className="hidden sm:inline"> — </span>
-            <span className="block sm:inline text-muted-foreground/80">
-              UI adapted from{" "}
-              <a
-                href={siteConfig.attribution.basedOn}
-                className="underline hover:text-primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {siteConfig.attribution.basedOnLabel}
-              </a>
-            </span>
           </p>
         </div>
       </div>

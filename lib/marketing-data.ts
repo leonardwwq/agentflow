@@ -35,7 +35,7 @@ export const productFeatures: ProductFeature[] = [
     id: 0,
     title: "项目 Dashboard",
     description:
-      "主界面驾驶舱：左侧项目阶段、右侧大排程表、下方角色卡片。一眼看清项目节奏、已确认排程与各角色最近交付。",
+      "项目主控驾驶舱：一眼看清项目节奏、已确认排程与各角色最近交付。项目主控可以随时调整排程，确保项目按时完成。",
     tags: ["Dashboard", "阶段", "排程", "角色卡片"],
     status: "live",
     year: "2026",
@@ -47,7 +47,7 @@ export const productFeatures: ProductFeature[] = [
     id: 1,
     title: "角色配置",
     description:
-      "角色是一等公民：共用 Prompt、工作知识指针、交付契约（交给谁、命名规范、格式约定）与角色内规范，像维护岗位说明书一样维护 Agent。",
+      "以角色出发：配置 Prompt、角色独立工作知识与角色内规范，像维护岗位说明书一样维护 Agent。",
     tags: ["角色", "Prompt", "交付契约", "规范"],
     status: "live",
     year: "2026",
@@ -58,7 +58,7 @@ export const productFeatures: ProductFeature[] = [
     id: 2,
     title: "工作流协作",
     description:
-      "工作流是引擎：定义角色之间的步骤、触发条件与产物传递。执行顺序与交接以工作流为准，而非排程表驱动。",
+      "定义Agent工作流：定义角色之间的协作步骤、触发条件与产物传递。自己定义Agent角色的协作新范式。",
     tags: ["工作流", "步骤", "触发", "交接"],
     status: "live",
     year: "2026",
@@ -69,7 +69,7 @@ export const productFeatures: ProductFeature[] = [
     id: 3,
     title: "由你确认",
     description:
-      "所有角色产出均需用户确认：AI 起草 → 人审阅 → 确认 → 进入交付记录或传给下一角色。排程草案与角色交付物均适用。",
+      "质量把控：由你决定是否可交付，避免AI产出低质量内容。并非完全黑盒，过程细节也可以全程把握。",
     tags: ["确认", "交付物", "人把关"],
     status: "live",
     year: "2026",
@@ -78,9 +78,9 @@ export const productFeatures: ProductFeature[] = [
   },
   {
     id: 4,
-    title: "项目主控 · 排程",
+    title: "项目主控",
     description:
-      "每个项目内置项目主控：与人沟通目标与约束，整理排程草案。经你确认后写入 Dashboard 右侧大排程表——排程是共识视图，不替代工作流执行。",
+      "项目主控：项目中的CEO，帮你把控整个项目。帮你制定角色、规划工作流以及管理项目进度。",
     tags: ["项目主控", "排程", "共识视图"],
     status: "live",
     year: "2026",
@@ -91,7 +91,7 @@ export const productFeatures: ProductFeature[] = [
     id: 5,
     title: "文档与资料库",
     description:
-      "项目容器内的协作底座：文档与资料仓库为角色提供工作知识引用，演示中以静态列表呈现。",
+      "多Agent协作基石：文档与资料仓库为角色提供工作知识引用，演示中以静态列表呈现。",
     tags: ["文档", "资料库", "项目容器"],
     status: "beta",
     year: "2026",
@@ -123,8 +123,8 @@ export interface HighlightCard {
 export const highlightCards: HighlightCard[] = [
   {
     id: 1,
-    title: "你做最终确认",
-    excerpt: "AI 起草，人审阅，确认后再交接。重要结果我说了算——不是全自动黑盒。",
+    title: "由你做决策",
+    excerpt: "重要结果由你决定，Agent辅助决策，定义人机协同的新范式。",
     date: "2026 Q2",
     category: "掌控感",
     color: "from-primary/20 to-emerald-500/20",
@@ -140,15 +140,15 @@ export const highlightCards: HighlightCard[] = [
   {
     id: 3,
     title: "Dashboard 一眼看清",
-    excerpt: "项目阶段、已确认排程、各角色最近交付同屏呈现——有项目感，不再靠脑子记进度。",
+    excerpt: "以项目管理进度，让你对多Agent协作流程更清晰。项目阶段、已确认排程、各角色最近交付同屏呈现。",
     date: "2026 Q2",
     category: "可感知进度",
     color: "from-purple-500/20 to-pink-500/20",
   },
   {
     id: 4,
-    title: "工作流驱动，排程给人看",
-    excerpt: "执行靠工作流，排程是项目主控与人对齐后的共识视图。改排程走主控产出并确认，而非直接改日期即改执行。",
+    title: "工作流驱动与排程可视化",
+    excerpt: "以工作流为核心驱动项目推进，自动生成可视化排程表，让你对项目进度一目了然。",
     date: "2026 Q2",
     category: "产品模型",
     color: "from-orange-500/20 to-amber-500/20",

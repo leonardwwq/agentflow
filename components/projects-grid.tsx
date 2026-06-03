@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Sparkles, Users, Zap } from "lucide-react"
+import { ExternalLink, Sparkles } from "lucide-react"
 import { featureFilters, featureFilterLabels, featureStatusLabels, productFeatures, type FeatureStatus } from "@/lib/marketing-data"
 import { siteConfig } from "@/lib/site-config"
 
@@ -105,23 +105,6 @@ export function ProjectsGrid() {
                   {project.description}
                 </p>
 
-                {(project.stars !== undefined || project.forks !== undefined) && (
-                  <div className="mb-5 flex items-center gap-5 font-mono text-xs text-muted-foreground">
-                    {project.stars !== undefined && (
-                      <span className="flex items-center gap-1.5 transition-colors group-hover:text-yellow-500">
-                        <Users className="h-3.5 w-3.5" />
-                        {project.stars}
-                      </span>
-                    )}
-                    {project.forks !== undefined && (
-                      <span className="flex items-center gap-1.5 transition-colors group-hover:text-foreground">
-                        <Zap className="h-3.5 w-3.5" />
-                        {project.forks}
-                      </span>
-                    )}
-                  </div>
-                )}
-
                 <div className="mb-5 flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <span
@@ -148,7 +131,7 @@ export function ProjectsGrid() {
                       className="flex items-center gap-2 font-mono text-xs text-primary hover:text-foreground transition-all duration-300 group/link"
                     >
                       <ExternalLink className="h-4 w-4 transition-transform group-hover/link:scale-110 group-hover/link:rotate-12" />
-                      <span className="underline-animate">演示</span>
+                      <span className="underline-animate">了解详情</span>
                     </a>
                   )}
                 </div>

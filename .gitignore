@@ -26,3 +26,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 *.DS_Store
+
+# Local-only docs (not committed)
+docs/project-plan.local.md
+docs/product-brief.local.md
+docs/product-roadmap.local.md

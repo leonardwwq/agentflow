@@ -48,7 +48,7 @@ export function rootMetadata(): Metadata {
       template: `%s | ${siteConfig.name}`,
     },
     description: siteConfig.description,
-    keywords: ["多智能体", "工作流", "SaaS", "Agent Flow", "低代码", "营销站点"],
+    keywords: ["AI 角色协作", "Dashboard", "工作流", "人确认", "项目主控", "Agent Flow", "多智能体"],
     openGraph: {
       type: "website",
       locale: siteConfig.locale,
@@ -73,7 +73,11 @@ export function rootMetadata(): Metadata {
     },
     robots: { index: true, follow: true },
     icons: {
-      icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+      icon: [
+        { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     },
     manifest: "/site.webmanifest",
   }

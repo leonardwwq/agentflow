@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { siteConfig } from "@/lib/site-config"
+import { isExternalHref, siteConfig } from "@/lib/site-config"
 import { ThemeToggle } from "./theme-toggle"
 import { ThemeChanger } from "./theme-changer"
 import Link from "next/link"
@@ -106,8 +106,8 @@ export function Header() {
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternalHref(link.href) ? "_blank" : undefined}
+                  rel={isExternalHref(link.href) ? "noopener noreferrer" : undefined}
                   aria-label={link.label}
                   className="group relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-all duration-300 hover:text-primary hover:bg-primary/10"
                 >
@@ -183,8 +183,8 @@ export function Header() {
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternalHref(link.href) ? "_blank" : undefined}
+                  rel={isExternalHref(link.href) ? "noopener noreferrer" : undefined}
                   aria-label={link.label}
                   className="flex h-11 w-11 items-center justify-center rounded-lg border border-border/50 text-muted-foreground transition-colors active:bg-secondary hover:border-primary/50 hover:text-primary hover:bg-primary/10"
                 >

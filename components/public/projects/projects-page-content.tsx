@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Sparkles, Search, Filter, Users, Zap } from "lucide-react"
+import { ExternalLink, Sparkles, Search, Filter } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { featureFilters, featureFilterLabels, featureStatusLabels, productFeatures } from "@/lib/marketing-data"
 import { siteConfig } from "@/lib/site-config"
@@ -174,23 +174,6 @@ export function ProjectsPageContent() {
                 {project.description}
               </p>
 
-              {(project.stars !== undefined || project.forks !== undefined) && (
-                <div className="mb-5 flex items-center gap-5 font-mono text-xs text-muted-foreground">
-                  {project.stars !== undefined && (
-                    <span className="flex items-center gap-1.5 transition-colors group-hover:text-yellow-500">
-                      <Users className="h-3.5 w-3.5" />
-                      {project.stars}
-                    </span>
-                  )}
-                  {project.forks !== undefined && (
-                    <span className="flex items-center gap-1.5 transition-colors group-hover:text-foreground">
-                      <Zap className="h-3.5 w-3.5" />
-                      {project.forks}
-                    </span>
-                  )}
-                </div>
-              )}
-
               <div className="mb-5 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <span
@@ -217,7 +200,7 @@ export function ProjectsPageContent() {
                     className="flex items-center gap-2 font-mono text-xs text-primary hover:text-foreground transition-all duration-300 group/link"
                   >
                     <ExternalLink className="h-4 w-4 transition-transform group-hover/link:scale-110 group-hover/link:rotate-12" />
-                    <span className="underline-animate">演示</span>
+                    <span className="underline-animate">了解详情</span>
                   </a>
                 )}
               </div>
@@ -229,7 +212,7 @@ export function ProjectsPageContent() {
 
         {filteredProjects.length === 0 && (
           <div className="text-center py-20">
-            <p className="font-mono text-sm text-muted-foreground">No projects found matching your criteria.</p>
+            <p className="font-mono text-sm text-muted-foreground">没有匹配的功能项。</p>
           </div>
         )}
       </div>

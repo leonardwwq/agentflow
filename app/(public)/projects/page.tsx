@@ -4,9 +4,9 @@ import { siteConfig } from "@/lib/site-config"
 
 export const metadata = createPageMetadata({
   title: "功能",
-  description: `${siteConfig.name} 核心功能：可视化编排、角色库、多智能体运行与监控。`,
+  description: `${siteConfig.name} 核心功能：Dashboard 驾驶舱、角色配置、工作流协作、人确认交付与项目主控排程。`,
   path: "/projects",
-  keywords: ["多智能体", "工作流", "拖拽编排", "Agent Flow"],
+  keywords: ["Dashboard", "角色配置", "工作流", "人确认", "项目主控", "Agent Flow"],
 })
 
 export default function ProjectsPage() {

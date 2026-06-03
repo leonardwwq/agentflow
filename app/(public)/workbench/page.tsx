@@ -4,9 +4,9 @@ import { siteConfig } from "@/lib/site-config"
 
 export const metadata = createPageMetadata({
   title: "路线图",
-  description: `${siteConfig.name} 产品路线图与即将推出的能力。`,
+  description: `${siteConfig.name} 演进方向：演示完成度与后续规划（叙事用，非真实排期承诺）。`,
   path: "/workbench",
-  keywords: ["路线图", "产品规划", "Agent Flow"],
+  keywords: ["路线图", "产品规划", "Agent Flow", "概念演示"],
 })
 
 export default function WorkbenchPage() {

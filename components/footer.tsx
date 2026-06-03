@@ -1,5 +1,5 @@
 import { ExternalLink, Heart } from "lucide-react"
-import { siteConfig } from "@/lib/site-config"
+import { isExternalHref, siteConfig } from "@/lib/site-config"
 
 export function Footer() {
   const { sections, contact, social, name } = siteConfig
@@ -45,8 +45,8 @@ export function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
-                  target={link.label !== "Email" ? "_blank" : undefined}
-                  rel={link.label !== "Email" ? "noopener noreferrer" : undefined}
+                  target={isExternalHref(link.href) ? "_blank" : undefined}
+                  rel={isExternalHref(link.href) ? "noopener noreferrer" : undefined}
                   className="group flex items-center justify-between gap-4 rounded-xl border border-transparent p-4 transition-all duration-300 lg:flex-row-reverse active:bg-secondary/30 hover:border-border/50 hover:bg-card/50 glass animate-fade-in"
                   style={{ animationDelay: `${index * 100 + 400}ms` }}
                 >
@@ -55,7 +55,7 @@ export function Footer() {
                     <span className="font-mono text-sm font-medium transition-colors group-hover:text-gradient">
                       {link.label}
                     </span>
-                    {link.label !== "Email" && (
+                    {isExternalHref(link.href) && (
                       <ExternalLink className="h-3 w-3 text-muted-foreground/50 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
                     )}
                   </div>
@@ -84,8 +84,8 @@ export function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternalHref(link.href) ? "_blank" : undefined}
+                  rel={isExternalHref(link.href) ? "noopener noreferrer" : undefined}
                   aria-label={link.label}
                   className="text-muted-foreground/50 transition-all duration-300 hover:text-primary hover:scale-110"
                 >

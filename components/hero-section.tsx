@@ -45,7 +45,9 @@ export function HeroSection() {
                 {hero.eyebrow}
               </p>
               <h1 className="text-4xl font-bold tracking-tight sm:text-4xl lg:text-5xl xl:text-6xl text-balance">
-                {hero.headlinePrefix}
+                <span className="text-foreground">{hero.headlineLine1}</span>
+                <br />
+                <span className="text-foreground">{hero.headlineLine2}</span>
                 <br />
                 <span className="bg-gradient-to-l from-primary/50 to-accent text-transparent bg-clip-text typing-cursor">
                   {displayText}
@@ -91,17 +93,17 @@ export function HeroSection() {
 
               <pre className="mt-6 overflow-hidden font-mono text-[10px] leading-relaxed text-primary/80 sm:text-xs md:text-sm">
                 <span className="sm:hidden">{`┌───────────────────────┐
-│  ${siteConfig.logo.prefix}${siteConfig.logo.highlight}           │
-│  > 角色: 4          │
-│  > 流程: 运行中     │
-│  > 状态: ready      │
+│  ${siteConfig.name}           │
+│  > 阶段: 分析中        │
+│  > 排程: 已确认     │
+│  > 待确认: 1         │
 └───────────────────────┘`}</span>
-                <span className="hidden sm:block">{`┌─────────────────────────────────────┐
-│  ${siteConfig.name.padEnd(33)}│
-│  > 编排: 可视化      │
-│  > 协作: 多智能体    │
-│  > 状态: 运行就绪    │
-└─────────────────────────────────────┘`}</span>
+                <span className="hidden sm:block">{`┌───────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│  Agent Flow                                                                                               │
+│  > 阶段: 分析中                                                                                          │
+│  > 排程: 已确认 v3                                                                                     │
+│  > 待确认: 1 份交付                                                                                    │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────┘`}</span>
               </pre>
             </div>
 

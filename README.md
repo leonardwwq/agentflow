@@ -1,83 +1,43 @@
-# SaaS Marketing Shell
+# Agent Flow
 
-A static marketing and landing site for a SaaS case study, built with Next.js, React, and Radix UI.
+多智能体协作平台的**拟真静态演示站**——面向路演、客户演示与作品集展示。界面与叙事像真实产品，但**无后端、无真实 AI、无账号与数据持久化**。
 
-**Start here:** [CUSTOMIZE.md](./CUSTOMIZE.md) · **Attribution:** [NOTICE.md](./NOTICE.md)
+**线上地址**：https://agentflow.weipm.com
 
-## What this project is
+## 包含什么
 
-A rebranded fork of the EinCode portfolio template, prepared as a **product marketing layer**: hero, features, highlights, roadmap, changelog, and about page. Content lives in `lib/site-config.ts` and `lib/marketing-data.ts` so you can iterate quickly before wiring a real SaaS app.
+- 品牌统一的营销站：首页、功能、路线图、关于、更新日志
+- 拟真 UI 与 mock 数据（终端动效、假运行状态等，纯前端）
+- 静态部署，`build` 即可上线
 
-### Why this is useful
+## 技术栈
 
-- Fast developer playground to prototype editor UX and integrations.
-- Collection of reusable UI components (see `components/`).
-- Up-to-date with Next.js 16 and React 19 modern patterns (app router, server components).
+Next.js 16 · React 19 · TypeScript · Tailwind CSS · Radix UI
 
-#### Key features
+## 本地开发
 
-- App shell and layout in `app/`
-- Reusable UI primitives under `components/` (cursor glow, header, footer, workbench, etc.)
-- Styling with Tailwind CSS and global styles in `styles/` and `app/globals.css`
-- TypeScript-first codebase
+```bash
+npm install
+npm run dev
+```
 
-##### Getting started
+常用命令：
 
-Prerequisites
+- `npm run dev` — 开发服务器
+- `npm run build` — 生产构建
+- `npm run start` — 运行构建产物
+- `npm run lint` — ESLint
 
-- Node.js 18 or newer
-- pnpm (recommended) — install from <https://pnpm.io/>
+环境变量见 `.env.example`（生产需配置 `NEXT_PUBLIC_SITE_URL`）。
 
-Quick start
+## 内容配置
 
-\`\`\`bash
-# install dependencies
-pnpm install
+文案与站点信息主要在：
 
-# run development server
-pnpm dev
-\`\`\`
+- `lib/site-config.ts` — 品牌、导航、联系方式
+- `lib/marketing-data.ts` — 首页与各营销页内容
+- `lib/blog-data.tsx` — 更新日志
 
-Available scripts
+## 说明
 
-- `pnpm dev` — runs `next dev` (development server)
-- `pnpm build` — runs `next build` (production build)
-- `pnpm start` — runs `next start` (serve built app)
-- `pnpm lint` — run `eslint .`
-
-Building for production
-
-\`\`\`bash
-pnpm build
-pnpm start
-\`\`\`
-
-Project layout (high level)
-
-- `app/` — Next.js App Router pages and layout
-- `components/` — UI components and small feature pieces
-- `lib/` — utilities and helpers
-- `public/` — static assets
-- `styles/` — global styles and Tailwind CSS entry
-
-Where to get help
-
-- Create an issue: <https://github.com/ehsanghaffar/code-forge/issues>
-- For quick questions, open a discussion or file a concise issue with reproduction steps.
-
-Who maintains this project
-
-- Maintainer: Ehsan Ghaffar — listed as the package author.
-
-Contributing
-
-Contributions are welcome. Open an issue to discuss larger changes, or send a pull request with a focused, well-documented change. Keep changes small and include a description and screenshots (if UI-related).
-
-Notes and next steps
-
-- Consider adding a `CONTRIBUTING.md` and CI badges for build/lint status.
-- If you want, I can add a basic `CONTRIBUTING.md` and a PR template next.
-
----
-
-If anything in this README should be adjusted (more examples, extra badges, or internal docs links), tell me which parts you want expanded and I'll update it.
+本仓库是**概念演示**，不提供可注册的产品或真实工作流引擎。若需交流，请通过站点页脚联系方式预约演示。

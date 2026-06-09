@@ -31,19 +31,20 @@ next-env.d.ts
 *.DS_Store
 
 # Local-only docs (not committed)
-docs/project-plan.local.md
-docs/product-brief.local.md
-docs/product-roadmap.local.md
+# 多设备同步开发文档，暂时取消忽略
+# docs/project-plan.local.md
+# docs/product-brief.local.md
+# docs/product-roadmap.local.md
 
 # Template / upstream documentation (local reference only)
-CUSTOMIZE.md
-NOTICE.md
-.github/copilot-instructions.md
-public/og-images/README.md
+# CUSTOMIZE.md
+# NOTICE.md
+# .github/copilot-instructions.md
+# public/og-images/README.md
 
-docs/architecture.md
-docs/development.md
-docs/deployment.md
-docs/improvement-checklist.md
-docs/performance.md
-docs/accessibility.md
+# docs/architecture.md
+# docs/development.md
+# docs/deployment.md
+# docs/improvement-checklist.md
+# docs/performance.md
+# docs/accessibility.md

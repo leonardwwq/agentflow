@@ -1,8 +1,10 @@
-export const workTabs = [
+export const workViewTabs = [
   { label: "概览", href: "/work/dashboard", slug: "dashboard" },
   { label: "工作流", href: "/work/workflow", slug: "workflow" },
-  { label: "文档", href: "/work/docs", slug: "docs" },
-  { label: "资料库", href: "/work/assets", slug: "assets" },
+  { label: "文件", href: "/work/docs", slug: "docs" },
 ] as const
 
-export type WorkTabSlug = (typeof workTabs)[number]["slug"]
+/** @deprecated 使用 workViewTabs */
+export const workTabs = workViewTabs
+
+export type WorkTabSlug = (typeof workViewTabs)[number]["slug"]

@@ -1,10 +1,13 @@
-export type ScheduleStatus = "confirmed" | "draft"
+export type TaskProgress = "completed" | "in_progress" | "not_started" | "pending"
 
 export type DeliveryConfirmStatus = "confirmed" | "pending"
 
-export interface ProjectStage {
-  name: string
-  description: string
+export interface StageTodo {
+  id: string
+  title: string
+  /** 悬浮时展示的详细说明 */
+  content: string
+  done: boolean
 }
 
 export interface ScheduleRow {
@@ -14,9 +17,12 @@ export interface ScheduleRow {
   startDate: string
   endDate: string
   milestone: string
+  /** 作为当前阶段卡片时的简要说明 */
+  summary?: string
   owner: string
-  status: ScheduleStatus
+  progress: TaskProgress
   version?: string
+  todos?: StageTodo[]
 }
 
 export interface RoleCardData {
@@ -33,20 +39,20 @@ export interface RoleCardData {
 export interface WorkProject {
   id: string
   name: string
-  stage: ProjectStage
   scheduleVersion: string
   scheduleDraftVersion?: string
   scheduleRows: ScheduleRow[]
   roles: RoleCardData[]
 }
 
+/** 与任务计划甘特图中「进行中」色块对应的当前阶段 */
+export function getActiveScheduleRow(rows: ScheduleRow[]): ScheduleRow | undefined {
+  return rows.find((row) => row.progress === "in_progress")
+}
+
 export const demoProject: WorkProject = {
   id: "competitive-analysis-q2-2026",
   name: "竞品分析 · 2026 Q2",
-  stage: {
-    name: "分析中",
-    description: "竞品数据收集与对比矩阵整理",
-  },
   scheduleVersion: "v3",
   scheduleDraftVersion: "v4",
   scheduleRows: [
@@ -57,7 +63,7 @@ export const demoProject: WorkProject = {
       endDate: "06-03",
       milestone: "竞品清单确认",
       owner: "项目主控",
-      status: "confirmed",
+      progress: "completed",
       version: "v3",
     },
     {
@@ -67,7 +73,7 @@ export const demoProject: WorkProject = {
       endDate: "06-05",
       milestone: "数据采集完成",
       owner: "研究员",
-      status: "confirmed",
+      progress: "completed",
       version: "v3",
     },
     {
@@ -77,7 +83,7 @@ export const demoProject: WorkProject = {
       endDate: "06-08",
       milestone: "对比矩阵初稿",
       owner: "分析师",
-      status: "confirmed",
+      progress: "completed",
       version: "v3",
     },
     {
@@ -86,9 +92,30 @@ export const demoProject: WorkProject = {
       startDate: "06-09",
       endDate: "06-10",
       milestone: "矩阵评审与修订",
+      summary: "对照评审意见修订对比矩阵，整理说明后提交确认",
       owner: "分析师",
-      status: "confirmed",
+      progress: "in_progress",
       version: "v3",
+      todos: [
+        {
+          id: "t1",
+          title: "核对初稿与采集数据一致性",
+          content: "逐条比对矩阵中的功能点与原始资料包，标记并修正偏差项。",
+          done: true,
+        },
+        {
+          id: "t2",
+          title: "根据评审意见修订评分维度",
+          content: "按产品侧反馈调整对比维度权重，更新矩阵列标题与说明文字。",
+          done: false,
+        },
+        {
+          id: "t3",
+          title: "整理修订说明供确认",
+          content: "汇总本次修订范围与待决策项，附在交付物开头一并提交。",
+          done: false,
+        },
+      ],
     },
     {
       id: "s5",
@@ -97,7 +124,7 @@ export const demoProject: WorkProject = {
       endDate: "06-12",
       milestone: "PM 汇总报告",
       owner: "PM",
-      status: "draft",
+      progress: "pending",
       version: "v4",
     },
     {
@@ -107,7 +134,7 @@ export const demoProject: WorkProject = {
       endDate: "06-14",
       milestone: "结论交付",
       owner: "PM",
-      status: "draft",
+      progress: "pending",
       version: "v4",
     },
   ],

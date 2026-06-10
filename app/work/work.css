@@ -1,0 +1,105 @@
+/* Apple-inspired tokens scoped to /work — separate from marketing terminal theme */
+.work-app {
+  --work-primary: #0066cc;
+  --work-primary-focus: #0071e3;
+  --work-ink: #1d1d1f;
+  --work-ink-muted: #7a7a7a;
+  --work-ink-soft: #333333;
+  --work-canvas: #ffffff;
+  --work-parchment: #f5f5f7;
+  --work-hairline: #e0e0e0;
+  --work-divider: #f0f0f0;
+  --work-pending: #bf4800;
+  --work-pending-bg: #fff4e8;
+  --work-confirmed: #1d7d43;
+  --work-confirmed-bg: #eefbf3;
+  --work-radius-lg: 18px;
+  --work-radius-md: 11px;
+  --work-radius-sm: 8px;
+
+  background-color: var(--work-parchment);
+  color: var(--work-ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.work-app * {
+  border-color: var(--work-hairline);
+}
+
+.work-card {
+  background: var(--work-canvas);
+  border: 1px solid var(--work-hairline);
+  border-radius: var(--work-radius-lg);
+}
+
+.work-pill {
+  border-radius: 9999px;
+}
+
+.work-link {
+  color: var(--work-primary);
+}
+
+.work-link:hover {
+  text-decoration: underline;
+}
+
+.work-tab-active {
+  color: var(--work-primary);
+  border-bottom: 2px solid var(--work-primary);
+}
+
+.work-btn-primary {
+  background: var(--work-primary);
+  color: #ffffff;
+  border-radius: 9999px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 400;
+  transition: transform 0.15s ease;
+}
+
+.work-btn-primary:active {
+  transform: scale(0.95);
+}
+
+.work-btn-primary:focus-visible {
+  outline: 2px solid var(--work-primary-focus);
+  outline-offset: 2px;
+}
+
+.work-badge-pending {
+  background: var(--work-pending-bg);
+  color: var(--work-pending);
+}
+
+.work-badge-confirmed {
+  background: var(--work-confirmed-bg);
+  color: var(--work-confirmed);
+}
+
+.work-badge-draft {
+  background: #f5f5f7;
+  color: var(--work-ink-muted);
+  border: 1px dashed var(--work-hairline);
+}
+
+.work-display {
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.work-body {
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.01em;
+}
+
+.work-caption {
+  font-size: 14px;
+  line-height: 1.43;
+  letter-spacing: -0.01em;
+  color: var(--work-ink-muted);
+}

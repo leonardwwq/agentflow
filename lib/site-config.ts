@@ -102,7 +102,7 @@ export const siteConfig = {
     rotatingPhrases: ["阶段与排程", "可确认的交付", "工作流协作", "项目主控对齐"],
     description:
       "一个人用多个 AI 角色做项目时，prompt 零散、交接混乱、进度靠脑子记。Agent Flow 让你在项目里配置角色与工作流，项目主控与人对齐排程，Dashboard 一眼看清阶段与交付——所有产出经你确认后再进入下一步。",
-    primaryCta: { label: "查看产品演示", href: "/projects" },
+    primaryCta: { label: "查看产品演示", href: "/work/dashboard" },
     secondaryCta: { label: "预约演示", href: `mailto:${contactDetails.email}` },
     terminalTitle: "agent-flow://dashboard",
     version: "v0.2.0",

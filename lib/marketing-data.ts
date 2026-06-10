@@ -171,7 +171,7 @@ export const roadmapItems: RoadmapItem[] = [
     description: "Dashboard、角色配置、工作流、确认流 — 核心演示能力已就绪",
     progress: 90,
     lastUpdated: "2026-06",
-    url: "/projects",
+    url: "/work/dashboard",
   },
   {
     id: 2,
@@ -179,7 +179,7 @@ export const roadmapItems: RoadmapItem[] = [
     description: "运行日志 → 角色卡片「待确认」— 演示增强项",
     progress: 60,
     lastUpdated: "2026-06",
-    url: "/projects",
+    url: "/work/dashboard",
   },
   {
     id: 3,

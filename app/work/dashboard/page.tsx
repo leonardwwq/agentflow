@@ -1,8 +1,5 @@
 import { createPageMetadata } from "@/lib/page-metadata"
-import { demoProject } from "@/lib/work-data"
-import { RoleCardGrid } from "@/components/work/role-card"
-import { ScheduleGantt } from "@/components/work/schedule-gantt"
-import { StageBlock } from "@/components/work/stage-block"
+import { DashboardContent } from "@/components/work/dashboard-content"
 
 export const metadata = createPageMetadata({
   title: "Dashboard",
@@ -11,13 +8,5 @@ export const metadata = createPageMetadata({
 })
 
 export default function DashboardPage() {
-  return (
-    <div className="space-y-6">
-      <div className="grid gap-4 lg:grid-cols-[minmax(240px,1fr)_minmax(0,2fr)] lg:items-stretch">
-        <StageBlock rows={demoProject.scheduleRows} />
-        <ScheduleGantt rows={demoProject.scheduleRows} />
-      </div>
-      <RoleCardGrid roles={demoProject.roles} />
-    </div>
-  )
+  return <DashboardContent />
 }

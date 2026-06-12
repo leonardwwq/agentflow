@@ -142,7 +142,7 @@ export const demoProject: WorkProject = {
     {
       id: "controller",
       name: "项目主控",
-      responsibility: "对齐目标 · 维护排程",
+      responsibility: "负责项目规划",
       isController: true,
       recentDelivery: "排程 v3 · 已确认",
       deliveryTime: "06-03 14:20",

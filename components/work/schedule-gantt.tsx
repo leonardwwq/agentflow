@@ -6,6 +6,10 @@ import type { ScheduleRow, TaskProgress } from "@/lib/work-data"
 
 interface ScheduleGanttProps {
   rows: ScheduleRow[]
+  scheduleVersion?: string
+  scheduleDraftVersion?: string
+  /** 演示用「今天」标记，格式 MM-DD */
+  todayMarker?: string
 }
 
 const DAY_WIDTH = 52
@@ -134,13 +138,20 @@ function TimelineGrid({ ticks, rangeStart }: { ticks: number[]; rangeStart: numb
   )
 }
 
-export function ScheduleGantt({ rows }: ScheduleGanttProps) {
-  const { rangeStart, rangeEnd, ticks, sortedRows, timelineWidth } = useMemo(() => {
+export function ScheduleGantt({
+  rows,
+  scheduleVersion,
+  scheduleDraftVersion,
+  todayMarker = "06-12",
+}: ScheduleGanttProps) {
+  const { rangeStart, rangeEnd, ticks, sortedRows, timelineWidth, todayDay } = useMemo(() => {
     const allStarts = rows.map((row) => toDayIndex(row.startDate))
     const allEnds = rows.map((row) => toDayIndex(row.endDate))
     const start = Math.min(...allStarts)
     const end = Math.max(...allEnds)
     const total = end - start + 1
+
+    const [, todayDayNum] = todayMarker.split("-").map(Number)
 
     return {
       rangeStart: start,
@@ -148,16 +159,29 @@ export function ScheduleGantt({ rows }: ScheduleGanttProps) {
       ticks: buildTicks(start, end),
       sortedRows: [...rows].sort((a, b) => toDayIndex(a.startDate) - toDayIndex(b.startDate)),
       timelineWidth: total * DAY_WIDTH + DAY_WIDTH,
+      todayDay: todayDayNum >= start && todayDayNum <= end ? todayDayNum : null,
     }
-  }, [rows])
+  }, [rows, todayMarker])
 
   return (
-    <section className="work-card flex h-full flex-col overflow-hidden">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--work-divider)] px-5 py-4 sm:px-6">
-        <h2 className="work-display text-[21px] text-[var(--work-ink)]">任务计划</h2>
-        <div className="flex flex-wrap gap-3">
+    <section className="work-card flex h-full min-h-[280px] flex-col overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--work-divider)] px-5 py-3.5 sm:px-6">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <h2 className="work-display text-[19px] text-[var(--work-ink)] sm:text-[21px]">任务计划</h2>
+          {scheduleVersion && (
+            <span className="work-pill work-badge-confirmed px-2 py-0.5 text-[11px] font-medium">
+              {scheduleVersion} 已确认
+            </span>
+          )}
+          {scheduleDraftVersion && (
+            <span className="work-pill work-badge-draft px-2 py-0.5 text-[11px] font-medium">
+              {scheduleDraftVersion} 待确认
+            </span>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2.5 sm:gap-3">
           {progressLegend.map(({ progress, label }) => (
-            <span key={progress} className="flex items-center gap-1.5 text-[12px] text-[var(--work-ink-muted)]">
+            <span key={progress} className="flex items-center gap-1.5 text-[11px] text-[var(--work-ink-muted)] sm:text-[12px]">
               <span className={cn("inline-block h-2.5 w-5 rounded-sm", progressBarClass[progress])} aria-hidden />
               {label}
             </span>
@@ -186,28 +210,57 @@ export function ScheduleGantt({ rows }: ScheduleGanttProps) {
               className="sticky top-0 z-20 border-b border-[var(--work-hairline)] bg-[var(--work-canvas)]"
               style={{ width: timelineWidth, height: AXIS_HEIGHT }}
             >
-              <TimelineAxis ticks={ticks} rangeStart={rangeStart} rangeEnd={rangeEnd} />
+              <div className="relative h-full" style={{ paddingInline: TIMELINE_PAD }}>
+                {todayDay !== null && (
+                  <div
+                    className="work-gantt-today-label pointer-events-none absolute bottom-0 z-[2] -translate-x-1/2 text-[10px] font-medium text-[var(--work-pending)]"
+                    style={{ left: dayOffset(todayDay, rangeStart) }}
+                  >
+                    今天
+                  </div>
+                )}
+                <TimelineAxis ticks={ticks} rangeStart={rangeStart} rangeEnd={rangeEnd} />
+              </div>
             </div>
 
-            {sortedRows.map((row) => (
-              <Fragment key={row.id}>
-                {/* 左列：左右滚动固定，上下跟着动 */}
-                <div
-                  className="work-caption sticky left-0 z-10 flex items-center truncate border-r border-[var(--work-hairline)] bg-[var(--work-canvas)] pr-3 text-[13px]"
-                  style={{ width: LABEL_WIDTH, height: ROW_HEIGHT }}
-                  title={row.milestone}
-                >
-                  {row.milestone}
-                </div>
-
-                <div className="relative" style={{ width: timelineWidth, height: ROW_HEIGHT }}>
-                  <div className="relative h-full" style={{ paddingInline: TIMELINE_PAD }}>
-                    <TimelineGrid ticks={ticks} rangeStart={rangeStart} />
-                    <TimelineBar row={row} rangeStart={rangeStart} />
+            {sortedRows.map((row) => {
+              const isActive = row.progress === "in_progress"
+              return (
+                <Fragment key={row.id}>
+                  {/* 左列：左右滚动固定，上下跟着动 */}
+                  <div
+                    className={cn(
+                      "work-caption sticky left-0 z-10 flex items-center truncate border-r border-[var(--work-hairline)] pr-3 text-[13px]",
+                      isActive ? "bg-[var(--work-parchment)] font-medium text-[var(--work-ink)]" : "bg-[var(--work-canvas)]",
+                    )}
+                    style={{ width: LABEL_WIDTH, height: ROW_HEIGHT }}
+                    title={row.milestone}
+                  >
+                    {row.milestone}
                   </div>
-                </div>
-              </Fragment>
-            ))}
+
+                  <div
+                    className={cn("relative", isActive && "bg-[var(--work-parchment)]/50")}
+                    style={{ width: timelineWidth, height: ROW_HEIGHT }}
+                  >
+                    <div className="relative h-full" style={{ paddingInline: TIMELINE_PAD }}>
+                      {todayDay !== null && row.id === sortedRows[0]?.id && (
+                        <div
+                          className="work-gantt-today pointer-events-none absolute top-0 z-[1] w-px"
+                          style={{
+                            left: dayOffset(todayDay, rangeStart),
+                            height: sortedRows.length * ROW_HEIGHT,
+                          }}
+                          aria-hidden
+                        />
+                      )}
+                      <TimelineGrid ticks={ticks} rangeStart={rangeStart} />
+                      <TimelineBar row={row} rangeStart={rangeStart} />
+                    </div>
+                  </div>
+                </Fragment>
+              )
+            })}
           </div>
         </div>
 

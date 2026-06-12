@@ -2,6 +2,8 @@ export type FilePermission = "read" | "write" | "admin"
 
 export type WorkFileType = "folder" | "file"
 
+export type FileConfirmStatus = "pending" | "confirmed"
+
 export interface FileAccessRule {
   roleId: string
   permission: FilePermission
@@ -14,7 +16,15 @@ export interface WorkFileNode {
   children?: WorkFileNode[]
   accessRules: FileAccessRule[]
   updatedAt: string
+  /** 需人确认的文件（如交付物、排程草案） */
+  confirmStatus?: FileConfirmStatus
 }
+
+/** 与 Dashboard 确认流对应的文件 ID */
+export const confirmFileIds = {
+  scheduleDraft: "f-sch-v4",
+  analystDelivery: "f-matrix",
+} as const
 
 export interface FileManagerRole {
   id: string
@@ -66,6 +76,7 @@ const projectFileSeeds: Record<string, WorkFileNode[]> = {
           name: "competitor-matrix-2026-06.md",
           type: "file",
           updatedAt: "2026-06-10",
+          confirmStatus: "pending",
           accessRules: defaultRules({ analyst: "write", researcher: "read", pm: "read" }),
         },
         {
@@ -121,6 +132,7 @@ const projectFileSeeds: Record<string, WorkFileNode[]> = {
           name: "schedule-v4-draft.json",
           type: "file",
           updatedAt: "2026-06-09",
+          confirmStatus: "pending",
           accessRules: defaultRules({ controller: "admin" }),
         },
       ],
@@ -236,6 +248,32 @@ export function filterFileTree(nodes: WorkFileNode[], query: string): WorkFileNo
     }
     return acc
   }, [])
+}
+
+export function hasPendingConfirmInTree(node: WorkFileNode): boolean {
+  if (node.confirmStatus === "pending") return true
+  return node.children?.some(hasPendingConfirmInTree) ?? false
+}
+
+export function countPendingConfirmFiles(nodes: WorkFileNode[]): number {
+  return nodes.reduce((count, node) => {
+    const self = node.type === "file" && node.confirmStatus === "pending" ? 1 : 0
+    const children = node.children ? countPendingConfirmFiles(node.children) : 0
+    return count + self + children
+  }, 0)
+}
+
+export function getFolderIdsWithPendingDescendants(nodes: WorkFileNode[]): string[] {
+  const ids: string[] = []
+  for (const node of nodes) {
+    if (node.type === "folder" && node.children?.some(hasPendingConfirmInTree)) {
+      ids.push(node.id)
+    }
+    if (node.children) {
+      ids.push(...getFolderIdsWithPendingDescendants(node.children))
+    }
+  }
+  return ids
 }
 
 export function createEmptyNode(type: WorkFileType, name: string): WorkFileNode {

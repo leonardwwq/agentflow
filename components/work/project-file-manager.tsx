@@ -15,9 +15,11 @@ import {
 import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import {
+  countPendingConfirmFiles,
   fileManagerRoles,
   filePermissionLabel,
   filterFileTree,
+  hasPendingConfirmInTree,
   type FilePermission,
   type WorkFileNode,
 } from "@/lib/work-files"
@@ -36,6 +38,8 @@ function FileTreeItem({
   const isSelected = selectedId === node.id
   const isFolder = node.type === "folder"
   const isExpanded = forceExpand || expandedIds.has(node.id)
+  const isPendingFile = node.type === "file" && node.confirmStatus === "pending"
+  const folderHasPending = isFolder && hasPendingConfirmInTree(node)
 
   return (
     <li>
@@ -65,13 +69,36 @@ function FileTreeItem({
           onClick={() => selectFile(node.id)}
         >
           {isFolder ? (
-            <Folder className="h-4 w-4 shrink-0 text-[var(--work-primary)]" aria-hidden />
+            <Folder
+              className={cn(
+                "h-4 w-4 shrink-0",
+                folderHasPending ? "text-[var(--work-pending)]" : "text-[var(--work-primary)]",
+              )}
+              aria-hidden
+            />
           ) : (
-            <File className="h-4 w-4 shrink-0 text-[var(--work-ink-muted)]" aria-hidden />
+            <File
+              className={cn(
+                "h-4 w-4 shrink-0",
+                isPendingFile ? "text-[var(--work-pending)]" : "text-[var(--work-ink-muted)]",
+              )}
+              aria-hidden
+            />
           )}
-          <span className={cn("truncate text-[13px]", isSelected && "font-medium text-[var(--work-ink)]")}>
+          <span
+            className={cn(
+              "min-w-0 flex-1 truncate text-[13px]",
+              isSelected && "font-medium text-[var(--work-ink)]",
+              isPendingFile && !isSelected && "text-[var(--work-ink)]",
+            )}
+          >
             {node.name}
           </span>
+          {isPendingFile && (
+            <span className="work-pill work-badge-pending shrink-0 px-1.5 py-0 text-[10px] font-medium leading-5">
+              待确认
+            </span>
+          )}
         </button>
       </div>
 
@@ -156,6 +183,7 @@ export function ProjectFileManager() {
   const canCreate = canCreateAt(getCreateParentId())
   const isSearching = searchQuery.trim().length > 0
   const filteredFiles = useMemo(() => filterFileTree(files, searchQuery), [files, searchQuery])
+  const pendingFileCount = useMemo(() => countPendingConfirmFiles(files), [files])
 
   const startRename = () => {
     if (!selectedNode || !canRename()) return
@@ -170,8 +198,14 @@ export function ProjectFileManager() {
   }
 
   return (
-    <aside className="work-file-manager flex h-full w-72 shrink-0 flex-col border-r border-[var(--work-hairline)] bg-[var(--work-parchment)]">
+    <aside className="work-file-manager flex h-full w-full flex-col bg-[var(--work-parchment)]">
       <div className="border-b border-[var(--work-divider)] px-3 py-2.5">
+        {pendingFileCount > 0 && (
+          <p className="mb-2 flex items-center gap-1.5 text-[11px] text-[var(--work-pending)]">
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--work-pending)]" aria-hidden />
+            {pendingFileCount} 个文件待确认
+          </p>
+        )}
         <div className="relative">
           <Search
             className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--work-ink-muted)]"

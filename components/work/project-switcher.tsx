@@ -14,7 +14,6 @@ import {
   type WorkProjectNode,
 } from "@/lib/work-projects"
 import { useWorkProject } from "@/components/work/work-project-context"
-import { WorkViewNav } from "@/components/work/work-view-nav"
 
 function ProjectStatusDot({ status, className }: { status: ProjectStatus; className?: string }) {
   return (
@@ -111,9 +110,11 @@ function ProjectTreeBranch({
 
 function ProjectMetaItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-[12px] text-[var(--work-ink-muted)]">{label}</span>
-      <span className="text-[15px] font-medium tabular-nums text-[var(--work-ink)]">{value}</span>
+    <div className="min-w-0">
+      <span className="text-[11px] text-[var(--work-ink-muted)]">{label}</span>
+      <span className="mt-0.5 block truncate text-[13px] font-medium tabular-nums text-[var(--work-ink)]">
+        {value}
+      </span>
     </div>
   )
 }
@@ -153,27 +154,26 @@ export function ProjectSwitcher() {
   }
 
   return (
-    <div className="grid w-full grid-cols-1 items-center gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
-      <div className="min-w-0 justify-self-start">
-        <DropdownMenu.Root open={open} onOpenChange={setOpen} modal={false}>
+    <div className="flex w-full min-w-0 flex-col gap-3">
+      <DropdownMenu.Root open={open} onOpenChange={setOpen} modal={false}>
         <DropdownMenu.Trigger asChild>
           <button
             type="button"
-            className="max-w-full rounded-md px-0 py-1 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--work-primary-focus)]"
+            className="max-w-full rounded-md px-0 py-0.5 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--work-primary-focus)]"
             aria-label="切换项目"
           >
-            <div className="flex items-center gap-2">
-              <h1 className="work-display truncate text-[22px] leading-snug text-[var(--work-ink)]">{displayTitle}</h1>
+            <div className="flex items-center gap-1.5">
+              <h1 className="work-display truncate text-[17px] leading-snug text-[var(--work-ink)]">{displayTitle}</h1>
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 shrink-0 text-[var(--work-ink-muted)] transition-transform duration-200",
+                  "h-3.5 w-3.5 shrink-0 text-[var(--work-ink-muted)] transition-transform duration-200",
                   open && "rotate-180",
                 )}
                 aria-hidden
               />
             </div>
             {parentBreadcrumb && (
-              <p className="work-caption mt-1 truncate text-[13px] leading-relaxed">{parentBreadcrumb}</p>
+              <p className="work-caption mt-0.5 truncate text-[12px] leading-relaxed">{parentBreadcrumb}</p>
             )}
           </button>
         </DropdownMenu.Trigger>
@@ -201,22 +201,17 @@ export function ProjectSwitcher() {
             </ul>
           </DropdownMenu.Content>
         </DropdownMenu.Portal>
-        </DropdownMenu.Root>
-      </div>
-
-      <WorkViewNav className="justify-self-center" />
+      </DropdownMenu.Root>
 
       {l2Project && (
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 justify-self-end lg:justify-self-end">
-          {l2Project.startDate && <ProjectMetaItem label="开始时间" value={l2Project.startDate} />}
-          {l2Project.expectedEndDate && (
-            <ProjectMetaItem label="预计完成" value={l2Project.expectedEndDate} />
-          )}
-          <div className="flex flex-col gap-1">
-            <span className="text-[12px] text-[var(--work-ink-muted)]">项目状态</span>
-            <span className="flex items-center gap-2 text-[15px] font-medium text-[var(--work-ink)]">
-              <ProjectStatusDot status={l2Project.status} className="h-2.5 w-2.5" />
-              {projectStatusLabel[l2Project.status]}
+        <div className="grid grid-cols-3 gap-2 border-t border-[var(--work-divider)] pt-3">
+          {l2Project.startDate && <ProjectMetaItem label="开始" value={l2Project.startDate} />}
+          {l2Project.expectedEndDate && <ProjectMetaItem label="预计完成" value={l2Project.expectedEndDate} />}
+          <div className="min-w-0">
+            <span className="text-[11px] text-[var(--work-ink-muted)]">状态</span>
+            <span className="mt-0.5 flex items-center gap-1.5 truncate text-[13px] font-medium text-[var(--work-ink)]">
+              <ProjectStatusDot status={l2Project.status} className="h-2 w-2" />
+              <span className="truncate">{projectStatusLabel[l2Project.status]}</span>
             </span>
           </div>
         </div>

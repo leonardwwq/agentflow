@@ -3,12 +3,12 @@
 import { LayoutGrid } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useRef, useState, type UIEvent } from "react"
 import { cn } from "@/lib/utils"
 import { AgentChatPanel } from "@/components/work/agent-chat-panel"
 import { ProjectFileManager } from "@/components/work/project-file-manager"
 import { ProjectSwitcher } from "@/components/work/project-switcher"
 import { WorkPlatformBrand } from "@/components/work/work-platform-brand"
+import { WorkViewNav } from "@/components/work/work-view-nav"
 
 interface WorkShellProps {
   children: React.ReactNode
@@ -18,17 +18,10 @@ export function WorkShell({ children }: WorkShellProps) {
   const pathname = usePathname()
   const isProjectsOverview = pathname === "/work/projects"
   const showProjectChrome = !isProjectsOverview
-  const [isScrolled, setIsScrolled] = useState(false)
-  const mainRef = useRef<HTMLElement>(null)
-
-  const handleMainScroll = (event: UIEvent<HTMLElement>) => {
-    setIsScrolled(event.currentTarget.scrollTop > 4)
-  }
 
   return (
     <div className="work-app flex h-screen flex-col overflow-hidden">
       <header className="z-50 shrink-0">
-        {/* 顶栏：平台标识 */}
         <div className="border-b border-[var(--work-hairline)] bg-[var(--work-canvas)]/95 backdrop-blur-md">
           <div className="flex w-full items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
             <WorkPlatformBrand />
@@ -46,34 +39,30 @@ export function WorkShell({ children }: WorkShellProps) {
             </Link>
           </div>
         </div>
-
-        {/* 次栏：项目信息 + 中部视图切换 */}
-        {showProjectChrome && (
-          <div
-            className={cn(
-              "w-full border-b border-[var(--work-hairline)] bg-[var(--work-parchment)] transition-shadow duration-300",
-              isScrolled && "work-project-bar-scrolled",
-            )}
-          >
-            <div className="w-full px-4 pb-5 pt-6 sm:px-6 sm:pb-6 sm:pt-8">
-              <ProjectSwitcher />
-            </div>
-          </div>
-        )}
       </header>
 
       <div className="flex min-h-0 flex-1">
         {showProjectChrome && (
-          <div className="hidden h-full w-72 shrink-0 lg:block">
-            <ProjectFileManager />
+          <div className="hidden h-full w-72 shrink-0 flex-col border-r border-[var(--work-hairline)] bg-[var(--work-parchment)] lg:flex">
+            <div className="shrink-0 border-b border-[var(--work-hairline)] px-3 py-3">
+              <ProjectSwitcher />
+            </div>
+            <div className="min-h-0 flex-1">
+              <ProjectFileManager />
+            </div>
           </div>
         )}
 
-        <main
-          ref={mainRef}
-          onScroll={handleMainScroll}
-          className="min-w-0 flex-1 overflow-y-auto px-4 py-6 sm:px-6 sm:py-8"
-        >
+        <main className="work-main-scroll min-w-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
+          {showProjectChrome && (
+            <>
+              <div className="mb-4 space-y-3 lg:hidden">
+                <ProjectSwitcher />
+                <WorkViewNav />
+              </div>
+              <WorkViewNav className="mb-5 hidden lg:flex" />
+            </>
+          )}
           <div className={cn(showProjectChrome ? "w-full" : "mx-auto max-w-6xl")}>{children}</div>
         </main>
 

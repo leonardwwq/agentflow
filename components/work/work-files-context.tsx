@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react"
@@ -16,6 +17,7 @@ import {
   deleteFromFileTree,
   findFileNode,
   findFileParent,
+  getFolderIdsWithPendingDescendants,
   getInitialProjectFiles,
   hasFilePermission,
   updateFileTree,
@@ -42,6 +44,7 @@ interface WorkFilesContextValue {
   canRename: () => boolean
   canDelete: () => boolean
   canManagePermissions: () => boolean
+  confirmFile: (fileId: string) => void
 }
 
 const WorkFilesContext = createContext<WorkFilesContextValue | null>(null)
@@ -51,6 +54,7 @@ export function WorkFilesProvider({ children }: { children: ReactNode }) {
   const [store, setStore] = useState<Record<string, WorkFileNode[]>>({})
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  const prevProjectIdRef = useRef<string | null>(null)
 
   const files = store[currentProjectId] ?? getInitialProjectFiles(currentProjectId)
 
@@ -60,8 +64,13 @@ export function WorkFilesProvider({ children }: { children: ReactNode }) {
       return { ...prev, [currentProjectId]: getInitialProjectFiles(currentProjectId) }
     })
     setSelectedId(null)
-    setExpandedIds(new Set())
   }, [currentProjectId])
+
+  useEffect(() => {
+    if (prevProjectIdRef.current === currentProjectId) return
+    prevProjectIdRef.current = currentProjectId
+    setExpandedIds(new Set(getFolderIdsWithPendingDescendants(files)))
+  }, [currentProjectId, files])
 
   const persist = useCallback(
     (nextFiles: WorkFileNode[]) => {
@@ -173,6 +182,18 @@ export function WorkFilesProvider({ children }: { children: ReactNode }) {
     [canManagePermissions, files, persist, selectedId],
   )
 
+  const confirmFile = useCallback(
+    (fileId: string) => {
+      persist(
+        updateFileTree(files, fileId, (node) => ({
+          ...node,
+          confirmStatus: "confirmed",
+        })),
+      )
+    },
+    [files, persist],
+  )
+
   const value = useMemo(
     () => ({
       files,
@@ -190,6 +211,7 @@ export function WorkFilesProvider({ children }: { children: ReactNode }) {
       canRename,
       canDelete,
       canManagePermissions,
+      confirmFile,
     }),
     [
       files,
@@ -207,6 +229,7 @@ export function WorkFilesProvider({ children }: { children: ReactNode }) {
       canRename,
       canDelete,
       canManagePermissions,
+      confirmFile,
     ],
   )
 
